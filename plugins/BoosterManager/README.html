@@ -1,0 +1,1448 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>BoosterManager</title>
+  <style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">
+
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+nav,
+section,
+summary {
+display: block;
+}
+
+audio,
+canvas,
+video {
+display: inline-block;
+}
+
+audio:not([controls]) {
+display: none;
+height: 0;
+}
+
+[hidden],
+template {
+display: none;
+}
+
+
+html {
+font-family: sans-serif; 
+-ms-text-size-adjust: 100%; 
+-webkit-text-size-adjust: 100%; 
+}
+
+body {
+margin: 0;
+}
+
+
+a {
+background: transparent;
+}
+
+a:focus {
+outline: thin dotted;
+}
+
+a:active,
+a:hover {
+outline: 0;
+}
+
+
+h1 {
+font-size: 2em;
+margin: 0.67em 0;
+}
+
+abbr[title] {
+border-bottom: 1px dotted;
+}
+
+b,
+strong {
+font-weight: bold;
+}
+
+dfn {
+font-style: italic;
+}
+
+hr {
+-moz-box-sizing: content-box;
+box-sizing: content-box;
+height: 0;
+}
+
+mark {
+background: #ff0;
+color: #000;
+}
+
+code,
+kbd,
+pre,
+samp {
+font-family: monospace, serif;
+font-size: 1em;
+}
+
+pre {
+white-space: pre-wrap;
+}
+
+q {
+quotes: "\201C" "\201D" "\2018" "\2019";
+}
+
+small {
+font-size: 80%;
+}
+
+sub,
+sup {
+font-size: 75%;
+line-height: 0;
+position: relative;
+vertical-align: baseline;
+}
+sup {
+top: -0.5em;
+}
+sub {
+bottom: -0.25em;
+}
+
+
+img {
+border: 0;
+}
+
+svg:not(:root) {
+overflow: hidden;
+}
+
+
+figure {
+margin: 0;
+}
+
+
+fieldset {
+border: 1px solid #c0c0c0;
+margin: 0 2px;
+padding: 0.35em 0.625em 0.75em;
+}
+
+legend {
+border: 0; 
+padding: 0; 
+}
+
+button,
+input,
+select,
+textarea {
+font-family: inherit; 
+font-size: 100%; 
+margin: 0; 
+}
+
+button,
+input {
+line-height: normal;
+}
+
+button,
+select {
+text-transform: none;
+}
+
+button,
+html input[type="button"], 
+input[type="reset"],
+input[type="submit"] {
+-webkit-appearance: button; 
+cursor: pointer; 
+}
+
+button[disabled],
+html input[disabled] {
+cursor: default;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+box-sizing: border-box; 
+padding: 0; 
+}
+
+input[type="search"] {
+-webkit-appearance: textfield; 
+-moz-box-sizing: content-box;
+-webkit-box-sizing: content-box; 
+box-sizing: content-box;
+}
+
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+-webkit-appearance: none;
+}
+
+button::-moz-focus-inner,
+input::-moz-focus-inner {
+border: 0;
+padding: 0;
+}
+
+textarea {
+overflow: auto; 
+vertical-align: top; 
+}
+
+
+table {
+border-collapse: collapse;
+border-spacing: 0;
+}
+.go-top {
+position: fixed;
+bottom: 2em;
+right: 2em;
+text-decoration: none;
+background-color: #E0E0E0;
+font-size: 12px;
+padding: 1em;
+display: inline;
+}
+
+html,body{ margin: auto;
+padding-right: 1em;
+padding-left: 1em;
+color:black;}*:not('#mkdbuttons'){margin:0;padding:0}body{font:13.34px helvetica,arial,freesans,clean,sans-serif;-webkit-font-smoothing:subpixel-antialiased;line-height:1.4;padding:3px;background:#fff;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px}p{margin:1em 0}a{color:#4183c4;text-decoration:none}body{background-color:#fff;padding:30px;margin:15px;font-size:14px;line-height:1.6}body>*:first-child{margin-top:0!important}body>*:last-child{margin-bottom:0!important}@media screen{body{box-shadow:0 0 0 1px #cacaca,0 0 0 4px #eee}}h1,h2,h3,h4,h5,h6{margin:20px 0 10px;padding:0;font-weight:bold;-webkit-font-smoothing:subpixel-antialiased;cursor:text}h1{font-size:28px;color:#000}h2{font-size:24px;border-bottom:1px solid #ccc;color:#000}h3{font-size:18px;color:#333}h4{font-size:16px;color:#333}h5{font-size:14px;color:#333}h6{color:#777;font-size:14px}p,blockquote,table,pre{margin:15px 0}ul{padding-left:30px}ol{padding-left:30px}ol li ul:first-of-type{margin-top:0}hr{background:transparent url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAECAYAAACtBE5DAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyJpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYwIDYxLjEzNDc3NywgMjAxMC8wMi8xMi0xNzozMjowMCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNSBNYWNpbnRvc2giIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OENDRjNBN0E2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OENDRjNBN0I2NTZBMTFFMEI3QjRBODM4NzJDMjlGNDgiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo4Q0NGM0E3ODY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo4Q0NGM0E3OTY1NkExMUUwQjdCNEE4Mzg3MkMyOUY0OCIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PqqezsUAAAAfSURBVHjaYmRABcYwBiM2QSA4y4hNEKYDQxAEAAIMAHNGAzhkPOlYAAAAAElFTkSuQmCC) repeat-x 0 0;border:0 none;color:#ccc;height:4px;padding:0}body>h2:first-child{margin-top:0;padding-top:0}body>h1:first-child{margin-top:0;padding-top:0}body>h1:first-child+h2{margin-top:0;padding-top:0}body>h3:first-child,body>h4:first-child,body>h5:first-child,body>h6:first-child{margin-top:0;padding-top:0}a:first-child h1,a:first-child h2,a:first-child h3,a:first-child h4,a:first-child h5,a:first-child h6{margin-top:0;padding-top:0}h1+p,h2+p,h3+p,h4+p,h5+p,h6+p,ul li>:first-child,ol li>:first-child{margin-top:0}dl{padding:0}dl dt{font-size:14px;font-weight:bold;font-style:italic;padding:0;margin:15px 0 5px}dl dt:first-child{padding:0}dl dt>:first-child{margin-top:0}dl dt>:last-child{margin-bottom:0}dl dd{margin:0 0 15px;padding:0 15px}dl dd>:first-child{margin-top:0}dl dd>:last-child{margin-bottom:0}blockquote{border-left:4px solid #DDD;padding:0 15px;color:#777}blockquote>:first-child{margin-top:0}blockquote>:last-child{margin-bottom:0}table{border-collapse:collapse;border-spacing:0;font-size:100%;font:inherit}table th{font-weight:bold;border:1px solid #ccc;padding:6px 13px}table td{border:1px solid #ccc;padding:6px 13px}table tr{border-top:1px solid #ccc;background-color:#fff}table tr:nth-child(2n){background-color:#f8f8f8}img{max-width:100%}code,tt{margin:0 2px;padding:0 5px;white-space:nowrap;border:1px solid #eaeaea;background-color:#f8f8f8;border-radius:3px;font-family:Consolas,'Liberation Mono',Courier,monospace;font-size:12px;color:#333}pre>code{margin:0;padding:0;white-space:pre;border:0;background:transparent}.highlight pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}pre code,pre tt{background-color:transparent;border:0}.poetry pre{font-family:Georgia,Garamond,serif!important;font-style:italic;font-size:110%!important;line-height:1.6em;display:block;margin-left:1em}.poetry pre code{font-family:Georgia,Garamond,serif!important;word-break:break-all;word-break:break-word;-webkit-hyphens:auto;-moz-hyphens:auto;hyphens:auto;white-space:pre-wrap}sup,sub,a.footnote{font-size:1.4ex;height:0;line-height:1;vertical-align:super;position:relative}sub{vertical-align:sub;top:-1px}@media print{body{background:#fff}img,pre,blockquote,table,figure{page-break-inside:avoid}body{background:#fff;border:0}code{background-color:#fff;color:#333!important;padding:0 .2em;border:1px solid #dedede}pre{background:#fff}pre code{background-color:white!important;overflow:visible}}@media screen{body.inverted{color:#eee!important;border-color:#555;box-shadow:none}.inverted body,.inverted hr .inverted p,.inverted td,.inverted li,.inverted h1,.inverted h2,.inverted h3,.inverted h4,.inverted h5,.inverted h6,.inverted th,.inverted .math,.inverted caption,.inverted dd,.inverted dt,.inverted blockquote{color:#eee!important;border-color:#555;box-shadow:none}.inverted td,.inverted th{background:#333}.inverted h2{border-color:#555}.inverted hr{border-color:#777;border-width:1px!important}::selection{background:rgba(157,193,200,0.5)}h1::selection{background-color:rgba(45,156,208,0.3)}h2::selection{background-color:rgba(90,182,224,0.3)}h3::selection,h4::selection,h5::selection,h6::selection,li::selection,ol::selection{background-color:rgba(133,201,232,0.3)}code::selection{background-color:rgba(0,0,0,0.7);color:#eee}code span::selection{background-color:rgba(0,0,0,0.7)!important;color:#eee!important}a::selection{background-color:rgba(255,230,102,0.2)}.inverted a::selection{background-color:rgba(255,230,102,0.6)}td::selection,th::selection,caption::selection{background-color:rgba(180,237,95,0.5)}.inverted{background:#0b2531;background:#252a2a}.inverted body{background:#252a2a}.inverted a{color:#acd1d5}}.highlight .c{color:#998;font-style:italic}.highlight .err{color:#a61717;background-color:#e3d2d2}.highlight .k,.highlight .o{font-weight:bold}.highlight .cm{color:#998;font-style:italic}.highlight .cp{color:#999;font-weight:bold}.highlight .c1{color:#998;font-style:italic}.highlight .cs{color:#999;font-weight:bold;font-style:italic}.highlight .gd{color:#000;background-color:#fdd}.highlight .gd .x{color:#000;background-color:#faa}.highlight .ge{font-style:italic}.highlight .gr{color:#a00}.highlight .gh{color:#999}.highlight .gi{color:#000;background-color:#dfd}.highlight .gi .x{color:#000;background-color:#afa}.highlight .go{color:#888}.highlight .gp{color:#555}.highlight .gs{font-weight:bold}.highlight .gu{color:#800080;font-weight:bold}.highlight .gt{color:#a00}.highlight .kc,.highlight .kd,.highlight .kn,.highlight .kp,.highlight .kr{font-weight:bold}.highlight .kt{color:#458;font-weight:bold}.highlight .m{color:#099}.highlight .s{color:#d14}.highlight .na{color:#008080}.highlight .nb{color:#0086b3}.highlight .nc{color:#458;font-weight:bold}.highlight .no{color:#008080}.highlight .ni{color:#800080}.highlight .ne,.highlight .nf{color:#900;font-weight:bold}.highlight .nn{color:#555}.highlight .nt{color:#000080}.highlight .nv{color:#008080}.highlight .ow{font-weight:bold}.highlight .w{color:#bbb}.highlight .mf,.highlight .mh,.highlight .mi,.highlight .mo{color:#099}.highlight .sb,.highlight .sc,.highlight .sd,.highlight .s2,.highlight .se,.highlight .sh,.highlight .si,.highlight .sx{color:#d14}.highlight .sr{color:#009926}.highlight .s1{color:#d14}.highlight .ss{color:#990073}.highlight .bp{color:#999}.highlight .vc,.highlight .vg,.highlight .vi{color:#008080}.highlight .il{color:#099}.highlight .gc{color:#999;background-color:#eaf2f5}.type-csharp .highlight .k,.type-csharp .highlight .kt{color:#00F}.type-csharp .highlight .nf{color:#000;font-weight:normal}.type-csharp .highlight .nc{color:#2b91af}.type-csharp .highlight .nn{color:#000}.type-csharp .highlight .s,.type-csharp .highlight .sc{color:#a31515}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">BoosterManager</h1>
+</header>
+<h1 id="booster-manager-plugin-for-archisteamfarm">Booster Manager Plugin for ArchiSteamFarm</h1>
+<p><a href="https://github.com/stars/Citrinate/lists/archisteamfarm-plugins"><img role="img" aria-label="Check out my other ArchiSteamFarm plugins" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNzciIGhlaWdodD0iMjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iQ2hlY2sgb3V0IG15IG90aGVyIEFyY2hpU3RlYW1GYXJtIHBsdWdpbnMiPjx0aXRsZT5DaGVjayBvdXQgbXkgb3RoZXIgQXJjaGlTdGVhbUZhcm0gcGx1Z2luczwvdGl0bGU+PGxpbmVhckdyYWRpZW50IGlkPSJzIiB4Mj0iMCIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCIgc3RvcC1jb2xvcj0iI2JiYiIgc3RvcC1vcGFjaXR5PSIuMSIvPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1vcGFjaXR5PSIuMSIvPjwvbGluZWFyR3JhZGllbnQ+PGNsaXBQYXRoIGlkPSJyIj48cmVjdCB3aWR0aD0iMjc3IiBoZWlnaHQ9IjIwIiByeD0iMyIgZmlsbD0iI2ZmZiIvPjwvY2xpcFBhdGg+PGcgY2xpcC1wYXRoPSJ1cmwoI3IpIj48cmVjdCB3aWR0aD0iMCIgaGVpZ2h0PSIyMCIgZmlsbD0iIzU1NSIvPjxyZWN0IHg9IjAiIHdpZHRoPSIyNzciIGhlaWdodD0iMjAiIGZpbGw9IiMwMDdlYzYiLz48cmVjdCB3aWR0aD0iMjc3IiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI3MpIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjExMCI+PGltYWdlIHg9IjUiIHk9IjMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgaHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0ozYUdsMFpYTnRiMnRsSWlCeWIyeGxQU0pwYldjaUlIWnBaWGRDYjNnOUlqQWdNQ0F5TkNBeU5DSWdlRzFzYm5NOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabklqNDhkR2wwYkdVK1IybDBTSFZpUEM5MGFYUnNaVDQ4Y0dGMGFDQmtQU0pOTVRJZ0xqSTVOMk10Tmk0Mk15QXdMVEV5SURVdU16Y3pMVEV5SURFeUlEQWdOUzR6TURNZ015NDBNemdnT1M0NElEZ3VNakExSURFeExqTTROUzQyTGpFeE15NDRNaTB1TWpVNExqZ3lMUzQxTnpjZ01DMHVNamcxTFM0d01TMHhMakEwTFM0d01UVXRNaTR3TkMwekxqTXpPQzQzTWpRdE5DNHdOREl0TVM0Mk1TMDBMakEwTWkweExqWXhRelF1TkRJeUlERTRMakEzSURNdU5qTXpJREUzTGpjZ015NDJNek1nTVRjdU4yTXRNUzR3T0RjdExqYzBOQzR3T0RRdExqY3lPUzR3T0RRdExqY3lPU0F4TGpJd05TNHdPRFFnTVM0NE16Z2dNUzR5TXpZZ01TNDRNemdnTVM0eU16WWdNUzR3TnlBeExqZ3pOU0F5TGpnd09TQXhMak13TlNBekxqUTVOUzQ1T1RndU1UQTRMUzQzTnpZdU5ERTNMVEV1TXpBMUxqYzJMVEV1TmpBMUxUSXVOalkxTFM0ekxUVXVORFkyTFRFdU16TXlMVFV1TkRZMkxUVXVPVE1nTUMweExqTXhMalEyTlMweUxqTTRJREV1TWpNMUxUTXVNakl0TGpFek5TMHVNekF6TFM0MU5DMHhMalV5TXk0eE1EVXRNeTR4TnpZZ01DQXdJREV1TURBMUxTNHpNaklnTXk0eklERXVNak11T1RZdExqSTJOeUF4TGprNExTNHpPVGtnTXkwdU5EQTFJREV1TURJdU1EQTJJREl1TURRdU1UTTRJRE1nTGpRd05TQXlMakk0TFRFdU5UVXlJRE11TWpnMUxURXVNak1nTXk0eU9EVXRNUzR5TXk0Mk5EVWdNUzQyTlRNdU1qUWdNaTQ0TnpNdU1USWdNeTR4TnpZdU56WTFMamcwSURFdU1qTWdNUzQ1TVNBeExqSXpJRE11TWpJZ01DQTBMall4TFRJdU9EQTFJRFV1TmpJMUxUVXVORGMxSURVdU9USXVOREl1TXpZdU9ERWdNUzR3T1RZdU9ERWdNaTR5TWlBd0lERXVOakEyTFM0d01UVWdNaTQ0T1RZdExqQXhOU0F6TGpJNE5pQXdJQzR6TVRVdU1qRXVOamt1T0RJMUxqVTNRekl3TGpVMk5TQXlNaTR3T1RJZ01qUWdNVGN1TlRreUlESTBJREV5TGpJNU4yTXdMVFl1TmpJM0xUVXVNemN6TFRFeUxURXlMVEV5SWk4K1BDOXpkbWMrIi8+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjE0NzUiIHk9IjE1MCIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHRleHRMZW5ndGg9IjI0OTAiPkNoZWNrIG91dCBteSBvdGhlciBBcmNoaVN0ZWFtRmFybSBwbHVnaW5zPC90ZXh0Pjx0ZXh0IHg9IjE0NzUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjI0OTAiPkNoZWNrIG91dCBteSBvdGhlciBBcmNoaVN0ZWFtRmFybSBwbHVnaW5zPC90ZXh0PjwvZz48L3N2Zz4=" alt="Check out my other ArchiSteamFarm plugins" /></a> <a href="https://github.com/Citrinate/BoosterManager/tree/master/BoosterManager/Localization"><img role="img" aria-label="Help with translations" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNDkiIGhlaWdodD0iMjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iSGVscCB3aXRoIHRyYW5zbGF0aW9ucyI+PHRpdGxlPkhlbHAgd2l0aCB0cmFuc2xhdGlvbnM8L3RpdGxlPjxsaW5lYXJHcmFkaWVudCBpZD0icyIgeDI9IjAiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz48L2xpbmVhckdyYWRpZW50PjxjbGlwUGF0aCBpZD0iciI+PHJlY3Qgd2lkdGg9IjE0OSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz48L2NsaXBQYXRoPjxnIGNsaXAtcGF0aD0idXJsKCNyKSI+PHJlY3Qgd2lkdGg9IjAiIGhlaWdodD0iMjAiIGZpbGw9IiM1NTUiLz48cmVjdCB4PSIwIiB3aWR0aD0iMTQ5IiBoZWlnaHQ9IjIwIiBmaWxsPSJwdXJwbGUiLz48cmVjdCB3aWR0aD0iMTQ5IiBoZWlnaHQ9IjIwIiBmaWxsPSJ1cmwoI3MpIi8+PC9nPjxnIGZpbGw9IiNmZmYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJWZXJkYW5hLEdlbmV2YSxEZWphVnUgU2FucyxzYW5zLXNlcmlmIiB0ZXh0LXJlbmRlcmluZz0iZ2VvbWV0cmljUHJlY2lzaW9uIiBmb250LXNpemU9IjExMCI+PGltYWdlIHg9IjUiIHk9IjMiIHdpZHRoPSIxNCIgaGVpZ2h0PSIxNCIgaHJlZj0iZGF0YTppbWFnZS9zdmcreG1sO2Jhc2U2NCxQSE4yWnlCbWFXeHNQU0ozYUdsMFpYTnRiMnRsSWlCeWIyeGxQU0pwYldjaUlIWnBaWGRDYjNnOUlqQWdNQ0F5TkNBeU5DSWdlRzFzYm5NOUltaDBkSEE2THk5M2QzY3Vkek11YjNKbkx6SXdNREF2YzNabklqNDhkR2wwYkdVK1EzSnZkMlJwYmp3dmRHbDBiR1UrUEhCaGRHZ2daRDBpVFRFMkxqRXhPU0F4Tnk0M09UTmhNaTQyTVRrZ01pNDJNVGtnTUNBd0lERXRNUzQyTmpjdExqVTJNbU10TGpVME5pMHVORE0yTFRFdU1EQTBMVEV1TURrdE1TNHdNVGd0TVM0NE5UZ3RMakF3T0MwdU16ZzRMalF4TkMwdU16ZzRMalF4TkMwdU16ZzRiREV1TURFNExTNHdNRGhqTGpNek1pNHdNRGd1TkRNdU5EY3VORFExTGpVNE5pNHhNamdnTVM0d05DNDNNVGNnTVM0ME9UVWdNUzR4TmpnZ01TNDNNREl1TWpjekxqRXlNeTR5TURRdU5URXpMUzR6TmpJdU5USTRlbTB0TlM0Mk9UVXROUzR5T0RkTU9DNDFJREV5TGpJMU1tTXRMamcyTnkwdU1qRTBMUzQ0TkRRdExqazRNaTB1T0RBM0xURXVNalEzWVRVdU1URTVJRFV1TVRFNUlEQWdNQ0F4SUM0NE1UUXRNaTR4TWpWakxqVTBOUzB1T0RBMElERXVNekF6TFRFdU5UQTRJREl1TWprdE1pNHdOek1nTVM0NE5UWXRNUzR3TnpRZ05DNDBOUzB4TGpZM015QTNMak14TFRFdU5qY3pJREl1TURrZ01DQTBMakkxTmk0eU55QTBMakk1TGpJM0xqRTVOeTR3TWpVdU16STRMakl4TXk0ek16TXVORE0zWVM0ek56Y3VNemMzSURBZ01DQXhMUzR6TlRVdU16a3piQzB1T1RJdExqQXhZeTB5TGprd01pQXdMVFF1T1RZNExqTTVOQzAyTGpVd05pQXhMakkwT0MweExqVXlOeTQ0TXpjdE1pNDFOeUF5TGpFeE55MHpMakk0TnlBMExqQXhNaTB1TURjMkxqRTJNeTB1TXpNMUlERXVNVEl0TVM0eU5DQXhMakF5TW5wdE1pNDFNek1nTnk0NE1qTmpMVEV1TkRRZ01DMHlMamM1TnkwdU5qSXlMVE11T0RJMUxURXVOelEyTFM0NE55MHVPVFl0TVM0ek9UY3RNUzQ1TXpFdE1TNDBPVE10TXk0eE5qUXRMakEyTFM0NE1UTXVNeTB4TGpBNU5DNDNPRGd0TVM0d05EUnNNUzQ1T0RndU1qRTRZeTQwTlM0d09USXVOelV1TXpRdU9ESTFMamcxTkM0ek9UY2dNaTQzTXpZZ01pNHhNaklnTXk0NE1UUWdNeTR4TlNBMExqQTBOaTR4T0M0d05ESXVNamt5TGpFMU55NHlPRE11TXpZMVlTNDBNVEl1TkRFeUlEQWdNQ0F4TFM0ek1qSXVNems0WXkwdU5EVTRMakEzTkMwdU9UTTJMakEzTXkweExqTTVOQzR3TnpONmJTMDBMakV3TVNBeUxqUXhPR0V4TkM0eU1UWWdNVFF1TWpFMklEQWdNQ0F4TFRJdU16QTNMUzR5TVRSakxURXVNakF5TFM0eU1UUXRNaTR5TURndExqVTRNaTB6TGpBM01pMHhMakV6UXpFdU5ERWdNakF1TURrMUxqRTJNeUF4Tnk0M09EWXVNREUwSURFMUxqQTBPR010TGpBek55MHVOalV0TGpFeExURXVPRGtnTVM0ME1qY3RNUzQzT1RjdU5qTTRMakF6TXlBeExqWTFNeTR6TkRNZ01pNHpOamd1TlRRNExqZzROeTR5TkRjZ01TNHpNVFF1T1RNeklERXVNekUwSURFdU5qQTRJREFnTXk0NE5UZ2dNeTQwT1RRZ05pNDBNRGdnTlM0d01pQTJMalF3T0M0Mk5UUWdNQ0F1TkRFMExqY3dNUzR4TWpjdU56YzVMUzQxTURJdU1UTTJMVEV1TVRVdU1UVXpMVEV1TkRFekxqRTFNM3BOTXk0MU1qVWdNVEV1TkRFNVl5MHVOakExTFM0eE1Ea3RNUzR4T1RRdExqTTFPQzB4TGpjMk9DMHVOVU10TGpBeE9DQXhNQzQwTnprdU1qZzBJRGd1TmpnNExqUTFJRGd1TVRrMll6RXVOakUzTFRRdU56VTNJRFl1TnpRMkxUWXVNelVnTVRBdU9EZzNMVFl1TnpjeklETXVPRGs0TFM0MElEY3VPVGM0TFM0d09USWdNVEV1TnpjNExqazJOeTR6TVM0d09ETWdNUzR5TmprdU16STNMamN4T0M0NE9URXRMak0xTGpNMU9DMHhMamN0TGpBeE5pMHlMakEzTXkwdU1EUXhMVEl1TWpNdExqRTJOeTAwTGpRek5DMHVNVGt5TFRZdU5qVTJMakUxTFRJdU16UTVMak0xTnkwMExqYzJPQ0F4TGpBNU9TMDJMamN4SURJdU5qWTFMUzQ1TXpndU56VTRMVEV1TnpZZ01TNDNNak10TWk0ek1UTWdNaTQ0TmpZdExqRTBOQzR6TFM0eU5UWXVOaTB1TXpVMExqa3RMakV4TGpNeU55MHVORGNnTVM0NU1TMHlMakl4TlNBeExqWjZiVGt1T1RRdU9URTNZeTR6TXpJdE1TNDBPRGdnTVM0NE1TMHpMamcwT0NBMkxqTTROUzB6TGpZNE5pQXhMakExTGpBek15NDFOeTQzTkRrdU1EVXlMamN6TVMweUxqVTROaTB1TURrdE15NDRNVFVnTVM0MU56Z3ROQzQwTlRjZ015NHlOeTB1TWpFNUxqVTBOaTB1TmpndU5qSTJMVEV1TWpjeExqVXpMUzQwTVRVdExqQTNOQzB1T0RZMkxTNHhNak10TGpjeExTNDRORFphSWk4K1BDOXpkbWMrIi8+PHRleHQgYXJpYS1oaWRkZW49InRydWUiIHg9IjgzNSIgeT0iMTUwIiBmaWxsPSIjMDEwMTAxIiBmaWxsLW9wYWNpdHk9Ii4zIiB0cmFuc2Zvcm09InNjYWxlKC4xKSIgdGV4dExlbmd0aD0iMTIxMCI+SGVscCB3aXRoIHRyYW5zbGF0aW9uczwvdGV4dD48dGV4dCB4PSI4MzUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjEyMTAiPkhlbHAgd2l0aCB0cmFuc2xhdGlvbnM8L3RleHQ+PC9nPjwvc3ZnPg==" alt="Help with translations" /></a> <img role="img" aria-label="GitHub all releases" src="data:image/svg+xml;charset=utf-8;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMTEiIGhlaWdodD0iMjAiIHJvbGU9ImltZyIgYXJpYS1sYWJlbD0iRG93bmxvYWRzOiAyayI+PHRpdGxlPkRvd25sb2FkczogMms8L3RpdGxlPjxsaW5lYXJHcmFkaWVudCBpZD0icyIgeDI9IjAiIHkyPSIxMDAlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiNiYmIiIHN0b3Atb3BhY2l0eT0iLjEiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3Atb3BhY2l0eT0iLjEiLz48L2xpbmVhckdyYWRpZW50PjxjbGlwUGF0aCBpZD0iciI+PHJlY3Qgd2lkdGg9IjExMSIgaGVpZ2h0PSIyMCIgcng9IjMiIGZpbGw9IiNmZmYiLz48L2NsaXBQYXRoPjxnIGNsaXAtcGF0aD0idXJsKCNyKSI+PHJlY3Qgd2lkdGg9Ijg4IiBoZWlnaHQ9IjIwIiBmaWxsPSIjNTU1Ii8+PHJlY3QgeD0iODgiIHdpZHRoPSIyMyIgaGVpZ2h0PSIyMCIgZmlsbD0iIzRjMSIvPjxyZWN0IHdpZHRoPSIxMTEiIGhlaWdodD0iMjAiIGZpbGw9InVybCgjcykiLz48L2c+PGcgZmlsbD0iI2ZmZiIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9IlZlcmRhbmEsR2VuZXZhLERlamFWdSBTYW5zLHNhbnMtc2VyaWYiIHRleHQtcmVuZGVyaW5nPSJnZW9tZXRyaWNQcmVjaXNpb24iIGZvbnQtc2l6ZT0iMTEwIj48aW1hZ2UgeD0iNSIgeT0iMyIgd2lkdGg9IjE0IiBoZWlnaHQ9IjE0IiBocmVmPSJkYXRhOmltYWdlL3N2Zyt4bWw7YmFzZTY0LFBITjJaeUJtYVd4c1BTSjNhR2wwWlhOdGIydGxJaUJ5YjJ4bFBTSnBiV2NpSUhacFpYZENiM2c5SWpBZ01DQXlOQ0F5TkNJZ2VHMXNibk05SW1oMGRIQTZMeTkzZDNjdWR6TXViM0puTHpJd01EQXZjM1puSWo0OGRHbDBiR1UrUjJsMFNIVmlQQzkwYVhSc1pUNDhjR0YwYUNCa1BTSk5NVElnTGpJNU4yTXROaTQyTXlBd0xURXlJRFV1TXpjekxURXlJREV5SURBZ05TNHpNRE1nTXk0ME16Z2dPUzQ0SURndU1qQTFJREV4TGpNNE5TNDJMakV4TXk0NE1pMHVNalU0TGpneUxTNDFOemNnTUMwdU1qZzFMUzR3TVMweExqQTBMUzR3TVRVdE1pNHdOQzB6TGpNek9DNDNNalF0TkM0d05ESXRNUzQyTVMwMExqQTBNaTB4TGpZeFF6UXVOREl5SURFNExqQTNJRE11TmpNeklERTNMamNnTXk0Mk16TWdNVGN1TjJNdE1TNHdPRGN0TGpjME5DNHdPRFF0TGpjeU9TNHdPRFF0TGpjeU9TQXhMakl3TlM0d09EUWdNUzQ0TXpnZ01TNHlNellnTVM0NE16Z2dNUzR5TXpZZ01TNHdOeUF4TGpnek5TQXlMamd3T1NBeExqTXdOU0F6TGpRNU5TNDVPVGd1TVRBNExTNDNOell1TkRFM0xURXVNekExTGpjMkxURXVOakExTFRJdU5qWTFMUzR6TFRVdU5EWTJMVEV1TXpNeUxUVXVORFkyTFRVdU9UTWdNQzB4TGpNeExqUTJOUzB5TGpNNElERXVNak0xTFRNdU1qSXRMakV6TlMwdU16QXpMUzQxTkMweExqVXlNeTR4TURVdE15NHhOellnTUNBd0lERXVNREExTFM0ek1qSWdNeTR6SURFdU1qTXVPVFl0TGpJMk55QXhMams0TFM0ek9Ua2dNeTB1TkRBMUlERXVNREl1TURBMklESXVNRFF1TVRNNElETWdMalF3TlNBeUxqSTRMVEV1TlRVeUlETXVNamcxTFRFdU1qTWdNeTR5T0RVdE1TNHlNeTQyTkRVZ01TNDJOVE11TWpRZ01pNDROek11TVRJZ015NHhOell1TnpZMUxqZzBJREV1TWpNZ01TNDVNU0F4TGpJeklETXVNaklnTUNBMExqWXhMVEl1T0RBMUlEVXVOakkxTFRVdU5EYzFJRFV1T1RJdU5ESXVNell1T0RFZ01TNHdPVFl1T0RFZ01pNHlNaUF3SURFdU5qQTJMUzR3TVRVZ01pNDRPVFl0TGpBeE5TQXpMakk0TmlBd0lDNHpNVFV1TWpFdU5qa3VPREkxTGpVM1F6SXdMalUyTlNBeU1pNHdPVElnTWpRZ01UY3VOVGt5SURJMElERXlMakk1TjJNd0xUWXVOakkzTFRVdU16Y3pMVEV5TFRFeUxURXlJaTgrUEM5emRtYysiLz48dGV4dCBhcmlhLWhpZGRlbj0idHJ1ZSIgeD0iNTM1IiB5PSIxNTAiIGZpbGw9IiMwMTAxMDEiIGZpbGwtb3BhY2l0eT0iLjMiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiB0ZXh0TGVuZ3RoPSI2MTAiPkRvd25sb2FkczwvdGV4dD48dGV4dCB4PSI1MzUiIHk9IjE0MCIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIGZpbGw9IiNmZmYiIHRleHRMZW5ndGg9IjYxMCI+RG93bmxvYWRzPC90ZXh0Pjx0ZXh0IGFyaWEtaGlkZGVuPSJ0cnVlIiB4PSI5ODUiIHk9IjE1MCIgZmlsbD0iIzAxMDEwMSIgZmlsbC1vcGFjaXR5PSIuMyIgdHJhbnNmb3JtPSJzY2FsZSguMSkiIHRleHRMZW5ndGg9IjEzMCI+Mms8L3RleHQ+PHRleHQgeD0iOTg1IiB5PSIxNDAiIHRyYW5zZm9ybT0ic2NhbGUoLjEpIiBmaWxsPSIjZmZmIiB0ZXh0TGVuZ3RoPSIxMzAiPjJrPC90ZXh0PjwvZz48L3N2Zz4=" alt="GitHub all releases" /></p>
+<h2 id="introduction">Introduction</h2>
+<p>This plugin provides an easy-to-use interface for turning gems into booster packs, and includes tools for managing trading cards and other related items in your inventories and on the marketplace.</p>
+<p>This project was originally based off of the <a href="https://github.com/Rudokhvist/BoosterCreator">Booster Creator Plugin</a> by <a href="https://github.com/Outzzz">Outzzz</a> and <a href="https://github.com/Rudokhvist">Rudokhvist</a></p>
+<h2 id="installation">Installation</h2>
+<ul>
+<li>Download the .zip file from the <a href="https://github.com/Citrinate/BoosterManager/releases/latest">latest release</a></li>
+<li>Locate the <code>plugins</code> folder inside your ASF folder. Create a new folder here and unpack the downloaded .zip file to that folder.</li>
+<li>(Re)start ASF, you should get a message indicating that the plugin loaded successfully.</li>
+</ul>
+<blockquote>
+<p>[!NOTE] This plugin is only tested to work with ASF-generic. It may or may not work with other ASF variants, but feel free to report any issues you may encounter.</p>
+</blockquote>
+<h2 id="usage">Usage</h2>
+<p>Parameters in square brackets are sometimes <code>[Optional]</code>, parameters in angle brackets are always <code>&lt;Required&gt;</code>. When providing a command with an optional parameter, you must also provide it with all other optional parameters that come before it. Plural parameters such as <code>[Bots]</code> can accept multiple values separated by <code>,</code> such as <code>A,B,C</code> unless otherwise specified.</p>
+<h3 id="booster-commands">Booster Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>booster [Bots] &lt;AppIDs&gt;</code></td>
+<td><code>Master</code></td>
+<td>Adds <code>AppIDs</code> to the given bot’s booster queue.</td>
+</tr>
+<tr class="even">
+<td><code>booster^ [Bots] &lt;AppIDs&gt; &lt;Amounts&gt;</code></td>
+<td><code>Master</code></td>
+<td>Adds <code>AppIDs</code> to some or all of given bot’s booster queues, selected in a way to minimize the time it takes to craft a total <code>Amount</code> of boosters. The <code>Amounts</code> specified may be a single amount for all <code>AppIDs</code>, or multiple amounts for each <code>AppID</code> respectively.</td>
+</tr>
+<tr class="odd">
+<td><code>bstatus [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Prints the status of the given bot’s booster queue.</td>
+</tr>
+<tr class="even">
+<td><code>bstatus^ [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Prints a shortened status of the given bot’s booster queue.</td>
+</tr>
+<tr class="odd">
+<td><code>bstop [Bots] &lt;AppIDs&gt;</code></td>
+<td><code>Master</code></td>
+<td>Removes <code>AppIDs</code> from the given bot’s booster queue.</td>
+</tr>
+<tr class="even">
+<td><code>bstoptime [Bots] &lt;Hours&gt;</code></td>
+<td><code>Master</code></td>
+<td>Removes everything from the given bot’s booster queue that will take more than the given <code>Hours</code> to craft.</td>
+</tr>
+<tr class="odd">
+<td><code>bstopall [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Removes everything from the given bot’s booster queue.</td>
+</tr>
+<tr class="even">
+<td><code>brate [Level]</code></td>
+<td><code>Master</code></td>
+<td>Prints the optimal booster drop rate for an account at <code>Level</code></td>
+</tr>
+<tr class="odd">
+<td><code>bdrops [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Prints the number of booster eligible games for the given bots</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE] Any <code>booster</code> commands that haven’t completed when ASF is closed will automatically resume the next time ASF is ran.</p>
+</blockquote>
+<h3 id="inventory-commands">Inventory Commands</h3>
+<h4 id="gems">Gems</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>gems [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of gems owned by the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>lootgems [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all gems from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="odd">
+<td><code>lootsacks [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all “Sack of Gems” from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="even">
+<td><code>packgems [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Packs all “Gems” owned by the given bot into “Sack of Gems”.</td>
+</tr>
+<tr class="odd">
+<td><code>transfergems [Bot] &lt;TargetBots&gt; &lt;Amounts&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends the provided <code>Amounts</code> of unpacked gems from the given bot to the given target bot. The <code>Amounts</code> specified may be a single amount sent to all target bots, or multiple amounts sent to each target bot respectively. You may also use <code>queue</code> or <code>q</code> as an amount to represent the number of gems needed to complete the target bot’s booster queue.</td>
+</tr>
+<tr class="even">
+<td><code>transfergems^ [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all gems from the given bot to the given target bot.</td>
+</tr>
+<tr class="odd">
+<td><code>transfersacks [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all “Sack of Gems” from the given bot to the given target bot.</td>
+</tr>
+<tr class="even">
+<td><code>unpackgems [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Unpacks all “Sack of Gems” owned by the given bot into “Gems”.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="boosters">Boosters</h4>
+<p>These commands only operate on marketable boosters. To loot or transfer only unmarketable boosters, add <code>u</code> to the start of the command, ex: <code>ulootboosters</code>. To loot or transfer all boosters, add <code>a</code> to the start of the command, ex: <code>alootboosters</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>boosters [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of marketable boosters owned by the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>lootboosters [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable booster packs from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="odd">
+<td><code>transferboosters [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable booster packs from the given bot to the given target bot.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="cards">Cards</h4>
+<p>These commands only operate on marketable cards. To loot or transfer only unmarketable cards, add <code>u</code> to the start of the command, ex: <code>ulootcards</code>. To loot or transfer all cards, add <code>a</code> to the start of the command, ex: <code>alootcards</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>cards [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of marketable non-foil trading cards owned by the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>foils [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of marketable foil trading cards owned by the given bot.</td>
+</tr>
+<tr class="odd">
+<td><code>lootcards [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable non-foil trading cards from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="even">
+<td><code>lootfoils [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable foil trading cards from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="odd">
+<td><code>transfercards [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable non-foil trading cards from the given bot to the given target bot.</td>
+</tr>
+<tr class="even">
+<td><code>transferfoils [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all marketable foil trading cards from the given bot to the given target bot.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="tf2-keys">TF2 Keys</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>keys [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of “Mann Co. Supply Crate Key” owned by the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>lootkeys [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Sends all “Mann Co. Supply Crate Key” from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="odd">
+<td><code>transferkeys [Bot] &lt;TargetBots&gt; &lt;Amounts&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends the provided <code>Amounts</code> of “Mann Co. Supply Crate Key” from the given bot to the given target bot. The <code>Amounts</code> specified may be a single amount sent to all target bots, or multiple amounts sent to each target bot respectively.</td>
+</tr>
+<tr class="even">
+<td><code>transferkeys^ [Bots] &lt;TargetBot&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all “Mann Co. Supply Crate Key” from the given bot to the given target bot.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="other-items">Other Items</h4>
+<p>These commands ignore marketability. To loot or transfer only marketable items, add <code>m</code> to the start of the command, ex: <code>mlootitems</code>. To loot or transfer only unmarketable items, add <code>u</code> to the start of the command, ex: <code>ulootitems</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>countitems &lt;Bots&gt; &lt;AppID&gt; &lt;ContextID&gt; &lt;ItemIdentifier&gt;</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of items owned by the given bot with the matching <code>AppID</code>, <code>ContextID</code>, and <a href="#itemidentifiers"><code>ItemIdentifier</code></a>.</td>
+</tr>
+<tr class="even">
+<td><code>lootitems &lt;Bots&gt; &lt;AppID&gt; &lt;ContextID&gt; &lt;ItemIdentifiers&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all items with the matching <code>AppID</code>, <code>ContextID</code>, and any of <a href="#itemidentifiers"><code>ItemIdentifiers</code></a> from the given bot to the <code>Master</code> user.</td>
+</tr>
+<tr class="odd">
+<td><code>transferitems &lt;Bots&gt; &lt;TargetBot&gt; &lt;AppID&gt; &lt;ContextID&gt; &lt;ItemIdentifiers&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends all items with the matching <code>AppID</code>, <code>ContextID</code>, and any of <a href="#itemidentifiers"><code>ItemIdentifiers</code></a> from the given bot to the given target bot.</td>
+</tr>
+<tr class="even">
+<td><code>transferitems^ &lt;Bot&gt; &lt;TargetBots&gt; &lt;Amounts&gt; &lt;AppID&gt; &lt;ContextID&gt; &lt;ItemIdentifiers&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends an amount of items with the matching <code>AppID</code>, <code>ContextID</code>, and any of <a href="#itemidentifiers"><code>ItemIdentifiers</code></a> from the given bot to the given target bot. The <code>Amounts</code> specified may be a single amount of each item sent to all target bots, or differing amounts of each item, respectively, sent to all target bots.</td>
+</tr>
+<tr class="odd">
+<td><code>transferitems% &lt;Bot&gt; &lt;TargetBots&gt; &lt;Amounts&gt; &lt;AppID&gt; &lt;ContextID&gt; &lt;ItemIdentifier&gt;</code></td>
+<td><code>Master</code></td>
+<td>Sends an amount of an item with the matching <code>AppID</code>, <code>ContextID</code>, and <a href="#itemidentifiers"><code>ItemIdentifier</code></a> from the given bot to the given target bot. The <code>Amounts</code> specified may be a single amount sent to all target bots, or differing amounts sent to each target bot respectively.</td>
+</tr>
+</tbody>
+</table>
+<h4 id="miscellaneous">Miscellaneous</h4>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>trade2faok [Bot] [Minutes]</code></td>
+<td><code>Master</code></td>
+<td>Accepts all pending 2FA trade confirmations for given bot instances. Optionally repeat this action once every <code>Minutes</code>. To cancel any repetition, set <code>Minutes</code> to 0.</td>
+</tr>
+<tr class="even">
+<td><code>tradecheck [Bot]</code></td>
+<td><code>Master</code></td>
+<td>Attempt to handle any incoming trades for the given bot using ASF’s <a href="https://github.com/JustArchiNET/ArchiSteamFarm/wiki/Trading#logic">trading logic</a>.</td>
+</tr>
+<tr class="odd">
+<td><code>tradesincoming [Bot] [From]</code></td>
+<td><code>Master</code></td>
+<td>Displays the number of incoming trades for the given bot, optionally filtered to only count trades <code>From</code> the given bot names or 64-bit SteamIDs.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="market-commands">Market Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>alert [Bot] &lt;AppID&gt; &lt;HashName&gt; &lt;Buy/Sell&gt; &lt;Above/Below/AboveOrAt/BelowOrAt&gt; &lt;Amount&gt;</code></td>
+<td><code>Master</code></td>
+<td>The given bot will check the price (in that bot’s wallet currency) of the item identified by <a href="/BoosterManager/Docs/ItemIDs.md#example-for-a-market-item"><code>AppID</code></a> and <a href="/BoosterManager/Docs/ItemIDs.md#example-for-a-market-item"><code>HashName</code></a> every 15 minutes. A message will be sent when the <code>Buy/Sell</code> now price is <code>Above/Below/AboveOrAt/BelowOrAt</code> the given <code>Amount</code>. <code>HashName</code> here should be taken directly from the URL of the item’s market listing page and not include any whitespace characters.</td>
+</tr>
+<tr class="even">
+<td><code>buylimit &lt;Bots&gt;</code></td>
+<td><code>Master</code></td>
+<td>Displays the value of the given bot’s active buy orders, and how close the bot is to hitting the buy order limit.</td>
+</tr>
+<tr class="odd">
+<td><code>cancelalert &lt;Bots&gt; &lt;AppID&gt; [HashName] [Buy/Sell] [Above/Below/AboveOrAt/BelowOrAt] [Amount]</code></td>
+<td><code>Master</code></td>
+<td>Cancels market alerts specified by <a href="/BoosterManager/Docs/ItemIDs.md#example-for-a-market-item"><code>AppID</code></a>, <a href="/BoosterManager/Docs/ItemIDs.md#example-for-a-market-item"><code>HashName</code></a>, <code>Buy/Sell</code>, <code>Above/Below/AboveOrAt/BelowOrAt</code>, and <code>Amount</code> for the given bots. <code>HashName</code> here should be taken directly from the URL of the item’s market listing page and not include any whitespace characters.</td>
+</tr>
+<tr class="even">
+<td><code>cancelallalerts [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Cancels all market alerts for the given bots.</td>
+</tr>
+<tr class="odd">
+<td><code>findlistings &lt;Bots&gt; &lt;ItemIdentifiers&gt;</code></td>
+<td><code>Master</code></td>
+<td>Displays the <code>ListingIDs</code> of any market listing belonging to the given bot and matching any of the <a href="#itemidentifiers"><code>ItemIdentifiers</code></a>.</td>
+</tr>
+<tr class="even">
+<td><code>findandremovelistings &lt;Bots&gt; &lt;ItemIdentifiers&gt;</code></td>
+<td><code>Master</code></td>
+<td>Removes any market listing belonging to the given bot and matching any of the <a href="#itemidentifiers"><code>ItemIdentifiers</code></a>.</td>
+</tr>
+<tr class="odd">
+<td><code>listings [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Displays the total value of all active market listings owned by the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>removelistings [Bot] &lt;ListingIDs&gt;</code></td>
+<td><code>Master</code></td>
+<td>Removes market <code>ListingIDs</code> belonging to the given bot.</td>
+</tr>
+<tr class="odd">
+<td><code>removepending &lt;Bots&gt;</code></td>
+<td><code>Master</code></td>
+<td>Removes all pending market listings belonging to the given bot.</td>
+</tr>
+<tr class="even">
+<td><code>market2faok [Bot] [Minutes]</code></td>
+<td><code>Master</code></td>
+<td>Accepts all pending 2FA market confirmations for given bot instances. Optionally repeat this action once every <code>Minutes</code>. To cancel any repetition, set <code>Minutes</code> to 0.</td>
+</tr>
+<tr class="odd">
+<td><code>value [Bots] [BalanceLimit]</code></td>
+<td><code>Master</code></td>
+<td>Displays the combined wallet balance and total value of all active market listings owned by the given bot. The maximum allowed balance in your region may be provided as <code>BalanceLimit</code>, a whole number, and it will instead display how close the given bot is to reaching that limit.</td>
+</tr>
+<tr class="even">
+<td><code>viewalerts [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Lists all market alerts for the given bots.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="log-commands">Log Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>logdata [Bots]</code></td>
+<td><code>Master</code></td>
+<td>A combination of the <code>logboosterdata</code>, <code>loginventoryhistory</code>, <code>logmarketlistings</code> and <code>logmarkethistory</code> commands.</td>
+</tr>
+<tr class="even">
+<td><code>logboosterdata [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Collects booster data from the given bot and sends it to <a href="#boosterdataapi"><code>BoosterDataAPI</code></a></td>
+</tr>
+<tr class="odd">
+<td><code>loginventoryhistory [Bots] [Count] [StartTime] [TimeFrac] [S]</code></td>
+<td><code>Master</code></td>
+<td>Collects inventory history data from the given bot and sends it to <a href="#inventoryhistoryapi"><code>InventoryHistoryAPI</code></a>. The number of pages of inventory history may be specified using <code>Count</code>, and may begin on the page specified by either <code>StartTime</code> alone or by the combination of <code>StartTime</code>, <code>TimeFrac</code>, and <code>S</code></td>
+</tr>
+<tr class="even">
+<td><code>logmarketlistings [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Collects market listings data from the given bot and sends it to <a href="#marketlistingsapi"><code>MarketListingsAPI</code></a></td>
+</tr>
+<tr class="odd">
+<td><code>logmarkethistory [Bots] [Count] [Start]</code></td>
+<td><code>Master</code></td>
+<td>Collects market history data from the given bot and sends it to <a href="#markethistoryapi"><code>MarketHistoryAPI</code></a>. The number of pages of market history may be specified using <code>Count</code>, and may begin on the page specified by <code>Start</code></td>
+</tr>
+<tr class="even">
+<td><code>logstop [Bots]</code></td>
+<td><code>Master</code></td>
+<td>Stops any actively running <code>loginventoryhistory</code> or <code>logmarkethistory</code> commands.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="other-commands">Other Commands</h3>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Access</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>boostermanager</code></td>
+<td><code>Master</code></td>
+<td>Prints version of plugin.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="itemidentifiers">ItemIdentifiers</h3>
+<p>An item identifier is an input used in certain commands which allows you target specific items or groups of items. If a command allows for multiple item identifiers, each identifier must be separated with <code>&amp;&amp;</code> instead of a comma. The valid formats for an item identifier are as follows:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Format</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>ItemName</code></td>
+<td>The identifier <code>Gems</code> will match the all “Gems” items</td>
+</tr>
+<tr class="even">
+<td><code>ItemType</code></td>
+<td>The identifier <code>Steam Gems</code> will match all “Sack of Gems” and “Gems” items</td>
+</tr>
+<tr class="odd">
+<td><code>HashName</code></td>
+<td>The identifiers <code>753-Sack of Gems</code> or <code>753-Sack%20of%20Gems</code> will match all “Sack of Gems” items</td>
+</tr>
+<tr class="even">
+<td><code>AppID::ContextID</code></td>
+<td>The identifier <code>753::6</code> will match with all Steam Community items</td>
+</tr>
+<tr class="odd">
+<td><code>AppID::ContextID::ClassID</code></td>
+<td>The identifier <code>753::6::667933237</code> will match all “Sack of Gems” items</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>[!NOTE] Information on how to determine an item’s <code>AppID</code>, <code>ContextID</code>, <code>ClassID</code>, <code>ItemName</code>, <code>ItemType</code>, and <code>HashName</code> may be found <a href="/BoosterManager/Docs/ItemIDs.md">here</a>.</p>
+</blockquote>
+<hr />
+<h3 id="command-aliases">Command Aliases</h3>
+<p>Most pluralized commands also have a non-pluralized alias; ex: <code>lootboosters</code> has the alias <code>lootbooster</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Alias</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>alert</code></td>
+<td><code>a</code>, <code>ma</code></td>
+</tr>
+<tr class="even">
+<td><code>buylimit</code></td>
+<td><code>bl</code></td>
+</tr>
+<tr class="odd">
+<td><code>cancelalert</code></td>
+<td><code>cma</code></td>
+</tr>
+<tr class="even">
+<td><code>findlistings</code></td>
+<td><code>fl</code></td>
+</tr>
+<tr class="odd">
+<td><code>findandremovelistings</code></td>
+<td><code>frl</code></td>
+</tr>
+<tr class="even">
+<td><code>removelistings</code></td>
+<td><code>rlistings</code>, <code>removel</code></td>
+</tr>
+<tr class="odd">
+<td><code>removepending</code></td>
+<td><code>rp</code></td>
+</tr>
+<tr class="even">
+<td><code>logboosterdata</code></td>
+<td><code>logbd</code></td>
+</tr>
+<tr class="odd">
+<td><code>loginventoryhistory</code></td>
+<td><code>logih</code></td>
+</tr>
+<tr class="even">
+<td><code>logmarketlistings</code></td>
+<td><code>logml</code></td>
+</tr>
+<tr class="odd">
+<td><code>logmarkethistory</code></td>
+<td><code>logmh</code></td>
+</tr>
+<tr class="even">
+<td><code>market2faok</code></td>
+<td><code>m2faok</code></td>
+</tr>
+<tr class="odd">
+<td><code>trade2faok</code></td>
+<td><code>t2faok</code></td>
+</tr>
+<tr class="even">
+<td><code>tradecheck</code></td>
+<td><code>tc</code></td>
+</tr>
+<tr class="odd">
+<td><code>tradesincoming</code></td>
+<td><code>ti</code></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th>Command</th>
+<th>Alias</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>bstatus ASF</code></td>
+<td><code>bsa</code></td>
+</tr>
+<tr class="even">
+<td><code>bstatus^ ASF</code></td>
+<td><code>bsa^</code></td>
+</tr>
+<tr class="odd">
+<td><code>boosters asf</code></td>
+<td><code>ba</code></td>
+</tr>
+<tr class="even">
+<td><code>buylimit ASF</code></td>
+<td><code>bla</code></td>
+</tr>
+<tr class="odd">
+<td><code>cards asf</code></td>
+<td><code>ca</code></td>
+</tr>
+<tr class="even">
+<td><code>foils asf</code></td>
+<td><code>fa</code></td>
+</tr>
+<tr class="odd">
+<td><code>gems ASF</code></td>
+<td><code>ga</code></td>
+</tr>
+<tr class="even">
+<td><code>keys ASF</code></td>
+<td><code>ka</code></td>
+</tr>
+<tr class="odd">
+<td><code>listings ASF</code></td>
+<td><code>lia</code></td>
+</tr>
+<tr class="even">
+<td><code>logdata ASF</code></td>
+<td><code>lda</code>, <code>loga</code></td>
+</tr>
+<tr class="odd">
+<td><code>lootboosters ASF</code></td>
+<td><code>lba</code></td>
+</tr>
+<tr class="even">
+<td><code>lootcards ASF</code></td>
+<td><code>lca</code></td>
+</tr>
+<tr class="odd">
+<td><code>lootfoils ASF</code></td>
+<td><code>lfa</code></td>
+</tr>
+<tr class="even">
+<td><code>lootgems ASF</code></td>
+<td><code>lga</code></td>
+</tr>
+<tr class="odd">
+<td><code>lootkeys ASF</code></td>
+<td><code>lka</code></td>
+</tr>
+<tr class="even">
+<td><code>lootsacks ASF</code></td>
+<td><code>lsa</code></td>
+</tr>
+<tr class="odd">
+<td><code>market2faok ASF [Minutes]</code></td>
+<td><code>m2faoka [Minutes]</code></td>
+</tr>
+<tr class="even">
+<td><code>trade2faok ASF [Minutes]</code></td>
+<td><code>t2faoka [Minutes]</code></td>
+</tr>
+<tr class="odd">
+<td><code>tradecheck ASF</code></td>
+<td><code>tca</code></td>
+</tr>
+<tr class="even">
+<td><code>tradesincoming ASF [From]</code></td>
+<td><code>tia [From]</code></td>
+</tr>
+<tr class="odd">
+<td><code>tradesincoming ASF ASF</code></td>
+<td><code>tiaa</code></td>
+</tr>
+<tr class="even">
+<td><code>transferboosters ASF &lt;TargetBot&gt;</code></td>
+<td><code>tba &lt;TargetBot&gt;</code></td>
+</tr>
+<tr class="odd">
+<td><code>transfercards ASF &lt;TargetBot&gt;</code></td>
+<td><code>tca &lt;TargetBot&gt;</code></td>
+</tr>
+<tr class="even">
+<td><code>transferfoils ASF &lt;TargetBot&gt;</code></td>
+<td><code>tfa &lt;TargetBot&gt;</code></td>
+</tr>
+<tr class="odd">
+<td><code>value ASF [BalanceLimit]</code></td>
+<td><code>va [BalanceLimit]</code></td>
+</tr>
+<tr class="even">
+<td><code>viewalerts ASF</code></td>
+<td><code>vaa</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="allowcraftuntradableboosters">AllowCraftUntradableBoosters</h3>
+<p><code>bool</code> type with default value of <code>true</code>. This configuration setting can be added to your <code>ASF.json</code> config file. If set to <code>false</code>, untradable gems will not be used to craft boosters, and the <code>unpackgems</code> and <code>packgems</code> command will not unpack untradable “Sack of Gems”.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;AllowCraftUntradableBoosters&quot;:</span> <span class="er">false,</span></span></code></pre></div>
+<hr />
+<h3 id="allowcraftunmarketableboosters">AllowCraftUnmarketableBoosters</h3>
+<p><code>bool</code> type with default value of <code>true</code>. This configuration setting can be added to your <code>ASF.json</code> config file. If set to <code>false</code>, the plugin will not craft unmarketable boosters.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;AllowCraftUnmarketableBoosters&quot;:</span> <span class="er">false,</span></span></code></pre></div>
+<blockquote>
+<p>[!NOTE] The plugin cannot immediately detect when a game’s boosters switch from being marketable to unmarketable. It will usually take ~4 hours to detect this change.</p>
+</blockquote>
+<hr />
+<h3 id="gamestobooster">GamesToBooster</h3>
+<p><code>HashSet&lt;uint&gt;</code> type with default value of <code>[]</code>. This configuration setting can be added to your individual bot config files. It will automatically add all of the <code>AppIDs</code> to that bot’s booster queue, and will automatically re-queue them after they’ve been crafted.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;GamesToBooster&quot;:</span> <span class="ot">[</span><span class="dv">730</span><span class="ot">,</span> <span class="dv">570</span><span class="ot">]</span><span class="er">,</span></span></code></pre></div>
+<blockquote>
+<p>[!NOTE] It’s not possible to remove any of these <code>AppIDs</code> from the booster queue using any commands. Any changes you want to make will need to be made in the configuration file.</p>
+</blockquote>
+<hr />
+<h3 id="boosterdataapi">BoosterDataAPI</h3>
+<p><code>string</code> type with no default value. This configuration setting can be added to your <code>ASF.json</code> config file. When the <code>logboosterdata</code> command is used, booster data will be gathered and sent to the API located at the specified url.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;BoosterDataAPI&quot;:</span> <span class="er">&quot;http://localhost/api/boosters&quot;,</span></span></code></pre></div>
+<p>You will need to design your API to accept requests and return responses per the following specifications:</p>
+<details>
+<summary>
+Request
+</summary>
+<p><strong>Method</strong>: <code>POST</code></p>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>steamid</code></td>
+<td><code>ulong</code></td>
+<td>SteamID of the bot that <code>data</code> belongs to</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>string</code></td>
+<td><code>https://steamcommunity.com/tradingcards/boostercreator/</code></td>
+</tr>
+<tr class="odd">
+<td><code>data</code></td>
+<td><code>JArray</code></td>
+<td>The data parsed from <code>source</code> and sent as an array of objects. Detailed below.</td>
+</tr>
+<tr class="even">
+<td><code>data[][appid]</code></td>
+<td><code>uint</code></td>
+<td>Booster game AppID</td>
+</tr>
+<tr class="odd">
+<td><code>data[][name]</code></td>
+<td><code>string</code></td>
+<td>Booster game name</td>
+</tr>
+<tr class="even">
+<td><code>data[][series]</code></td>
+<td><code>uint</code></td>
+<td>Booster series number</td>
+</tr>
+<tr class="odd">
+<td><code>data[][price]</code></td>
+<td><code>uint</code></td>
+<td>Price of booster in gems</td>
+</tr>
+<tr class="even">
+<td><code>data[][unavailable]</code></td>
+<td><code>bool</code></td>
+<td>Set to <code>true</code> when the booster is on a 24 hour cooldown</td>
+</tr>
+<tr class="odd">
+<td><code>data[][available_at_time]</code></td>
+<td><code>string?</code></td>
+<td>A date and time string in ISO 8601 format, if <code>unavailable</code> is <code>false</code> then this will be <code>null</code></td>
+</tr>
+</tbody>
+</table>
+</details>
+<details>
+<summary>
+Response
+</summary>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>success</code></td>
+<td><code>bool</code></td>
+<td>Yes</td>
+<td>Whether your operations succeeded or failed.</td>
+</tr>
+<tr class="even">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>A custom message that will be displayed in place of the default succeed/fail message</td>
+</tr>
+<tr class="odd">
+<td><code>show_message</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to show any message</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<h3 id="marketlistingsapi">MarketListingsAPI</h3>
+<p><code>string</code> type with no default value. This configuration setting can be added to your <code>ASF.json</code> config file. When the <code>logmarketlistings</code> command is used, market listing data will be gathered and sent to the API located at the specified url.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;MarketListingsAPI&quot;:</span> <span class="er">&quot;http://localhost/api/listings&quot;,</span></span></code></pre></div>
+<p>You will need to design your API to accept requests and return responses per the following specifications:</p>
+<details>
+<summary>
+Request
+</summary>
+<p><strong>Method</strong>: <code>POST</code></p>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>steamid</code></td>
+<td><code>ulong</code></td>
+<td>SteamID of the bot that <code>data</code> belongs to</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>string</code></td>
+<td><code>https://steamcommunity.com/market/mylistings?norender=1</code></td>
+</tr>
+<tr class="odd">
+<td><code>data</code></td>
+<td><code>JObject</code></td>
+<td>The data taken directly from <code>source</code> with empty string values converted to <code>null</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> Pagination here is not supported. While <code>source</code> does support pagination for <code>data[listings]</code>, the plugin will automatically combine all pages into one such that <code>data[listings]</code> contains all active listings for the bot.</p>
+</blockquote>
+</details>
+<details>
+<summary>
+Response
+</summary>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>success</code></td>
+<td><code>bool</code></td>
+<td>Yes</td>
+<td>Whether your operations succeeded or failed.</td>
+</tr>
+<tr class="even">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>A custom message that will be displayed in place of the default succeed/fail message</td>
+</tr>
+<tr class="odd">
+<td><code>show_message</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to show any message</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<h3 id="markethistoryapi">MarketHistoryAPI</h3>
+<p><code>string</code> type with no default value. This configuration setting can be added to your <code>ASF.json</code> config file. When the <code>logmarkethistory</code> command is used, market history data will be gathered and sent to the API located at the specified url.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;MarketHistoryAPI&quot;:</span> <span class="er">&quot;http://localhost/api/markethistory&quot;,</span></span></code></pre></div>
+<p>You will need to design your API to accept requests and return responses per the following specifications:</p>
+<details>
+<summary>
+Request
+</summary>
+<p><strong>Method</strong>: <code>POST</code></p>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>steamid</code></td>
+<td><code>ulong</code></td>
+<td>SteamID of the bot that <code>data</code> belongs to</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>string</code></td>
+<td><code>https://steamcommunity.com/market/myhistory?norender=1&amp;count=500</code></td>
+</tr>
+<tr class="odd">
+<td><code>page</code></td>
+<td><code>uint</code></td>
+<td>Page number, defined as <code>floor(data[start] / 500) + 1</code></td>
+</tr>
+<tr class="even">
+<td><code>data</code></td>
+<td><code>JObject</code></td>
+<td>The data taken directly from <code>source</code> with empty string values converted to <code>null</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> Multiple pages of <code>data</code> will be requested sequentially, and not in parallel.</p>
+</blockquote>
+</details>
+<details>
+<summary>
+Response
+</summary>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>success</code></td>
+<td><code>bool</code></td>
+<td>Yes</td>
+<td>Whether your operations succeeded or failed. If there’s more pages to fetch, the plugin will only continue when <code>success</code> is <code>true</code></td>
+</tr>
+<tr class="even">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>A custom message that will be displayed in place of the default succeed/fail message</td>
+</tr>
+<tr class="odd">
+<td><code>show_message</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to show any message</td>
+</tr>
+<tr class="even">
+<td><code>get_next_page</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to fetch the next page. If the plugin was already going to fetch the next page anyway, this does nothing.</td>
+</tr>
+<tr class="odd">
+<td><code>next_page</code></td>
+<td><code>uint</code></td>
+<td>No</td>
+<td>If <code>get_next_page</code> is set to <code>true</code>, the next page will be fetched using this page number</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<h3 id="inventoryhistoryapi">InventoryHistoryAPI</h3>
+<p><code>string</code> type with no default value. This configuration setting can be added to your <code>ASF.json</code> config file. When the <code>loginventoryhistory</code> command is used, inventory history data will be gathered and sent to the API located at the specified url.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;InventoryHistoryAPI&quot;:</span> <span class="er">&quot;http://localhost/api/inventoryhistory&quot;,</span></span></code></pre></div>
+<p>You will need to design your API to accept requests and return responses per the following specifications:</p>
+<details>
+<summary>
+Request
+</summary>
+<p><strong>Method</strong>: <code>POST</code></p>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>steamid</code></td>
+<td><code>ulong</code></td>
+<td>SteamID of the bot that <code>data</code> belongs to</td>
+</tr>
+<tr class="even">
+<td><code>source</code></td>
+<td><code>string</code></td>
+<td><code>https://steamcommunity.com/my/inventoryhistory/?ajax=1</code></td>
+</tr>
+<tr class="odd">
+<td><code>page</code></td>
+<td><code>uint</code></td>
+<td>The value of the <code>start_time</code> query parameter used to request <code>source</code>. If a cursor object was used to request <code>source</code> instead, this will be equal to <code>cursor[time]</code></td>
+</tr>
+<tr class="even">
+<td><code>cursor</code></td>
+<td><code>JObject</code></td>
+<td>The value of the <code>cursor</code> object query parameter used to request <code>source</code></td>
+</tr>
+<tr class="odd">
+<td><code>data</code></td>
+<td><code>JObject</code></td>
+<td>The data taken directly from <code>source</code> with empty string values converted to <code>null</code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><strong>Note</strong> Documentation of Steam’s Inventory History API can be found <a href="/BoosterManager/Docs/InventoryHistory.md">here</a></p>
+</blockquote>
+<blockquote>
+<p><strong>Note</strong> Multiple pages of <code>data</code> will be requested sequentially, and not in parallel.</p>
+</blockquote>
+</details>
+<details>
+<summary>
+Response
+</summary>
+<p><strong>Content-Type</strong>: <code>application/json</code></p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>success</code></td>
+<td><code>bool</code></td>
+<td>Yes</td>
+<td>Whether your operations succeeded or failed. If there’s more pages to fetch, the plugin will only continue when <code>success</code> is <code>true</code></td>
+</tr>
+<tr class="even">
+<td><code>message</code></td>
+<td><code>string</code></td>
+<td>No</td>
+<td>A custom message that will be displayed in place of the default succeed/fail message</td>
+</tr>
+<tr class="odd">
+<td><code>show_message</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to show any message</td>
+</tr>
+<tr class="even">
+<td><code>get_next_page</code></td>
+<td><code>bool</code></td>
+<td>No</td>
+<td>Whether or not to fetch the next page. If the plugin was already going to fetch the next page anyway, this does nothing.</td>
+</tr>
+<tr class="odd">
+<td><code>next_page</code></td>
+<td><code>uint</code></td>
+<td>No</td>
+<td>If <code>get_next_page</code> is set to <code>true</code>, the next page will be fetched using this page number</td>
+</tr>
+<tr class="even">
+<td><code>next_cursor</code></td>
+<td><code>JObject</code></td>
+<td>No</td>
+<td>If <code>get_next_page</code> is set to <code>true</code>, the next page will be fetched using this cursor object</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<h3 id="inventoryhistoryappfilter">InventoryHistoryAppFilter</h3>
+<p><code>HashSet&lt;uint&gt;</code> type with defalt value of <code>[]</code>. This configuration setting can be added to your <code>ASF.json</code> config file. When using the <code>loginventoryhistory</code> command or <code>InventoryHistory</code> IPC interface API endpoint, the results will be filtered to only show inventory history events from these <code>AppIDs</code></p>
+<p>Example:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;InventoryHistoryAppFilter&quot;:</span> <span class="ot">[</span><span class="dv">730</span><span class="ot">,</span> <span class="dv">570</span><span class="ot">]</span><span class="er">,</span></span></code></pre></div>
+<hr />
+<h3 id="logdatapagedelay">LogDataPageDelay</h3>
+<p><code>uint</code> type with default value of <code>15</code>. This configuration setting can be added to your <code>ASF.json</code> config file. When using the <code>loginventoryhistory</code> or <code>logmarkethistory</code> commands to fetch multiple pages, it will add a <code>Seconds</code> delay between each page fetch.</p>
+<p>Example:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="er">&quot;LogDataPageDelay&quot;:</span> <span class="er">15,</span></span></code></pre></div>
+<hr />
+<h3 id="ipc-interface">IPC Interface</h3>
+<table>
+<thead>
+<tr class="header">
+<th>API</th>
+<th>Method</th>
+<th>Parameters</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>/API/BoosterManager/{botName}/BoosterData</code></td>
+<td><code>GET</code></td>
+<td></td>
+<td>Retrieves booster data for given bot</td>
+</tr>
+<tr class="even">
+<td><code>/API/BoosterManager/{botName}/MarketListings</code></td>
+<td><code>GET</code></td>
+<td></td>
+<td>Retrieves market listings data for given bot</td>
+</tr>
+<tr class="odd">
+<td><code>/API/BoosterManager/{botName}/MarketHistory</code></td>
+<td><code>GET</code></td>
+<td><code>page</code></td>
+<td>Retrieves market history data for given bot</td>
+</tr>
+<tr class="even">
+<td><code>/API/BoosterManager/{botName}/InventoryHistory</code></td>
+<td><code>GET</code></td>
+<td><code>startTime</code>, <code>timeFrac</code>, <code>s</code></td>
+<td>Retrieves inventory history data for given bot</td>
+</tr>
+<tr class="odd">
+<td><code>/API/BoosterManager/{botName}/GetBadgeInfo/{appID}</code></td>
+<td><code>GET</code></td>
+<td><code>border</code></td>
+<td>Retrieves badge info for given bot</td>
+</tr>
+<tr class="even">
+<td><code>/API/BoosterManager/{botNames}/GetPriceHistory/{appID}/{hashName}</code></td>
+<td><code>GET</code></td>
+<td></td>
+<td>Retrieves price history for market items <a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></td>
+</tr>
+</tbody>
+</table>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Responses are not dependent on the account used to make these requests. You may provide multiple <code>botNames</code>, and the first available bot will be used to make the request.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
