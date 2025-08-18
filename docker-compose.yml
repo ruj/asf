@@ -1,0 +1,14 @@
+services:
+  asf:
+    container_name: asf
+    build:
+      context: .
+      args:
+        - ASF_VERSION=${ASF_VERSION}
+    env_file: .env
+    volumes:
+      - ./config:/app/config
+      - ./logs:/app/logs
+    ports:
+      - "${ASF_IPC_PORT}:${ASF_IPC_PORT}"
+    restart: unless-stopped
