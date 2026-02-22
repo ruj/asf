@@ -35,6 +35,8 @@ else
 
     rm -rf "$TMP_CLONE"
 
+    export GIT_TERMINAL_PROMPT=0
+
     git clone "$REPOSITORY_URL" "$TMP_CLONE" || { echo "Git clone failed"; exit 1; }
 
     echo "Copying configs to $CONFIG_DIR, preserving .gitkeep"
