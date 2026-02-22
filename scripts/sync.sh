@@ -6,21 +6,19 @@ TMP_CLONE="/tmp/asf-config"
 REPOSITORY_URL="https://${GITHUB_USERNAME}:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY_USERNAME}/${GITHUB_REPOSITORY_NAME}.git"
 BRANCH="master"
 
+echo "Starting temporary healthcheck server on port 8000"
+
+while true; do
+  printf "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK" | nc -l -p 8000 -q 1
+done &
+
+HEALTH_PID=$!
+
 mkdir -p "$CONFIG_DIR"
 mkdir -p "$TMP_CLONE"
 
 git config --global --add safe.directory "$CONFIG_DIR"
 
-echo "Starting ArchiSteamFarm"
-
-cd /asf
-dotnet ArchiSteamFarm.dll --no-restart --service &
-
-ASF_PID=$!
-
-echo "Syncing configs in background"
-
-(
 if [ -d "$CONFIG_DIR/.git" ]; then
     echo "Updating existing configs"
 
@@ -49,6 +47,17 @@ else
     git config user.email "${GITHUB_EMAIL}"
 fi
 
+echo "Starting ArchiSteamFarm"
+
+cd /asf
+dotnet ArchiSteamFarm.dll --no-restart --service &
+
+ASF_PID=$!
+
+sleep 10
+
+kill $HEALTH_PID 2>/dev/null || true
+
 echo "Monitoring $CONFIG_DIR for changes"
 
 while inotifywait -r -e modify,create,delete,move "$CONFIG_DIR"; do
@@ -67,6 +76,3 @@ while inotifywait -r -e modify,create,delete,move "$CONFIG_DIR"; do
         echo "Config changes pushed to GitHub /${GITHUB_REPOSITORY_USERNAME}/${GITHUB_REPOSITORY_NAME}"
     fi
 done
-) &
-
-wait $ASF_PID
