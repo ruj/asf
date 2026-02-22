@@ -11,8 +11,18 @@ mkdir -p "$TMP_CLONE"
 
 git config --global --add safe.directory "$CONFIG_DIR"
 
+echo "Starting ArchiSteamFarm"
+
+cd /asf
+dotnet ArchiSteamFarm.dll --no-restart --service &
+
+ASF_PID=$!
+
+echo "Syncing configs in background"
+
+(
 if [ -d "$CONFIG_DIR/.git" ]; then
-    echo "Updating existing configs..."
+    echo "Updating existing configs"
 
     cd "$CONFIG_DIR"
 
@@ -21,13 +31,13 @@ if [ -d "$CONFIG_DIR/.git" ]; then
     git reset --hard
     git pull origin "$BRANCH"
 else
-    echo "Cloning configs from private repository to temp folder..."
+    echo "Cloning configs from private repository to temp folder"
 
     rm -rf "$TMP_CLONE"
 
     git clone "$REPOSITORY_URL" "$TMP_CLONE"
 
-    echo "Copying configs to $CONFIG_DIR, preserving .gitkeep..."
+    echo "Copying configs to $CONFIG_DIR, preserving .gitkeep"
 
     find "$CONFIG_DIR" -mindepth 1 ! -name '.gitkeep' -exec rm -rf {} + || true
     cp -r "$TMP_CLONE"/* "$CONFIG_DIR"/
@@ -39,12 +49,7 @@ else
     git config user.email "${GITHUB_EMAIL}"
 fi
 
-echo "Starting ArchiSteamFarm..."
-
-cd /asf
-dotnet ArchiSteamFarm.dll --no-restart --service &
-
-echo "Monitoring $CONFIG_DIR for changes..."
+echo "Monitoring $CONFIG_DIR for changes"
 
 while inotifywait -r -e modify,create,delete,move "$CONFIG_DIR"; do
     sleep 0.5
@@ -62,3 +67,6 @@ while inotifywait -r -e modify,create,delete,move "$CONFIG_DIR"; do
         echo "Config changes pushed to GitHub /${GITHUB_REPOSITORY_USERNAME}/${GITHUB_REPOSITORY_NAME}"
     fi
 done
+) &
+
+wait $ASF_PID

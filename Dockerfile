@@ -11,4 +11,16 @@ COPY ./scripts /app/scripts
 
 RUN chmod -R +x /app/scripts
 
+RUN mkdir -p /app/config && cat <<EOF > /app/config/IPC.config
+{
+  "Kestrel": {
+    "Endpoints": {
+      "HTTP": {
+        "Url": "http://*:8000"
+      }
+    }
+  }
+}
+EOF
+
 ENTRYPOINT ["/app/scripts/sync.sh"]
