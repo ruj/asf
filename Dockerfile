@@ -2,7 +2,9 @@ ARG ASF_VERSION
 
 FROM justarchi/archisteamfarm:${ASF_VERSION}
 
-RUN apt-get update && apt-get install -y git bash inotify-tools netcat && apt-get clean
+RUN apt-get update \
+  && apt-get install -y git bash inotify-tools netcat-openbsd \
+  && apt-get clean
 
 WORKDIR /app
 
