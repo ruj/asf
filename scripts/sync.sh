@@ -35,7 +35,7 @@ else
 
     rm -rf "$TMP_CLONE"
 
-    git clone "$REPOSITORY_URL" "$TMP_CLONE"
+    git clone "$REPOSITORY_URL" "$TMP_CLONE" || { echo "Git clone failed"; exit 1; }
 
     echo "Copying configs to $CONFIG_DIR, preserving .gitkeep"
 
