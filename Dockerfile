@@ -11,7 +11,7 @@ COPY ./scripts /app/scripts
 
 RUN chmod -R +x /app/scripts
 
-RUN mkdir -p /app/config && cat <<EOF > /app/config/IPC.config
+RUN mkdir -p /asf/config && cat <<EOF > /asf/config/IPC.config
 {
   "Kestrel": {
     "Endpoints": {
