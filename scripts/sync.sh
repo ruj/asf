@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -ex
 
 CONFIG_DIR="/app/config"
 TMP_CLONE="/tmp/asf-config"
@@ -8,9 +8,11 @@ BRANCH="master"
 
 echo "Starting temporary healthcheck server on port 8000"
 
+(
 while true; do
-  printf "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK" | nc -l -p 8000 -q 1
-done &
+  printf "HTTP/1.1 200 OK\r\nContent-Length: 2\r\n\r\nOK" | nc -l 8000
+done
+) >/dev/null 2>&1 &
 
 HEALTH_PID=$!
 
